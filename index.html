@@ -1,54 +1,38 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Scooto Arena Digital</title>
+<title>Scooto Arena PRO</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
 
 <style>
-*{margin:0;padding:0;box-sizing:border-box;}
-
+*{margin:0;padding:0;box-sizing:border-box}
 body{
   height:100vh;
   overflow:hidden;
   font-family:'Orbitron',sans-serif;
-  background: radial-gradient(circle at center, #0B1A2D 20%, #000 80%);
+  background:radial-gradient(circle at center,#0B1A2D 20%,#000 80%);
   color:white;
 }
 
-/* =========================
-   ARENA CONTAINER
-========================= */
-
-.scene{
-  width:100%;
-  height:100%;
-  perspective:1400px;
-  position:relative;
-  overflow:hidden;
-}
-
-/* =========================
-   PARTICLES
-========================= */
-
-.scene::after{
-  content:"";
+/* PARTICLES */
+canvas{
   position:absolute;
   inset:0;
-  background-image:
-  radial-gradient(rgba(0,242,255,0.4) 1px, transparent 1px);
-  background-size:50px 50px;
-  opacity:0.05;
+  z-index:0;
 }
 
-/* =========================
-   FLOOR
-========================= */
+/* ARENA */
+.scene{
+  position:relative;
+  width:100%;
+  height:100%;
+  perspective:1500px;
+}
 
+/* FLOOR */
 .floor{
   position:absolute;
   width:900px;
@@ -65,232 +49,152 @@ body{
   border-radius:50%;
   border:2px solid #00F2FF;
   box-shadow:0 0 20px #00F2FF;
+  animation:pulse 3s infinite alternate;
 }
 
 .ring:nth-child(2){
-  width:650px;
-  height:650px;
-  margin:auto;
+  width:650px;height:650px;margin:auto;
 }
-
 .ring:nth-child(3){
-  width:400px;
-  height:400px;
-  margin:auto;
+  width:400px;height:400px;margin:auto;
   border-color:#FF007A;
-  box-shadow:0 0 25px #FF007A;
+  box-shadow:0 0 30px #FF007A;
 }
 
-/* =========================
-   ROBOT
-========================= */
+@keyframes pulse{
+  from{opacity:.6}
+  to{opacity:1}
+}
 
+/* ROBOT */
 .robot{
   position:absolute;
-  top:50%;
-  left:50%;
+  top:50%;left:50%;
   transform:translate(-50%,-50%);
   animation:float 3s ease-in-out infinite;
-  z-index:5;
+  z-index:3;
 }
-
 .robot-body{
-  width:130px;
-  height:130px;
+  width:130px;height:130px;
   background:#7B3FE4;
   border-radius:30px;
-  display:flex;
-  justify-content:center;
-  align-items:center;
+  display:flex;justify-content:center;align-items:center;
   font-size:50px;
-  box-shadow:0 0 40px rgba(123,63,228,0.7);
+  box-shadow:0 0 40px rgba(123,63,228,.8);
 }
-
-.crown{
-  position:absolute;
-  top:-20px;
-  left:50%;
-  transform:translateX(-50%);
-  display:flex;
-  gap:6px;
-}
-
-.flower{
-  width:14px;
-  height:14px;
-  border-radius:50%;
-}
-
-.flower:nth-child(1){background:#FF007A;}
-.flower:nth-child(2){background:#00F2FF;}
-.flower:nth-child(3){background:#FF7A00;}
-.flower:nth-child(4){background:#00FF99;}
-
 @keyframes float{
-  0%,100%{ transform:translate(-50%,-50%) translateY(0);}
-  50%{ transform:translate(-50%,-50%) translateY(-20px);}
+  0%,100%{transform:translate(-50%,-50%) translateY(0)}
+  50%{transform:translate(-50%,-50%) translateY(-20px)}
 }
 
-/* =========================
-   LOGO TOP
-========================= */
-
-.logo{
-  position:absolute;
-  top:40px;
-  left:50%;
-  transform:translateX(-50%);
-  background:white;
-  padding:15px 40px;
-  border-radius:15px;
-  color:#333;
-  font-weight:800;
-}
-
-/* =========================
-   HUD TIMER
-========================= */
-
+/* HUD */
 .hud{
   position:absolute;
-  top:40px;
-  left:40px;
-  width:260px;
+  top:40px;left:40px;
+  width:280px;
   padding:20px;
   border-radius:20px;
   border:2px solid #00F2FF;
-  background:rgba(0,242,255,0.05);
+  background:rgba(0,242,255,.05);
   backdrop-filter:blur(10px);
   transform:rotateY(-15deg);
+  z-index:5;
 }
-
-.hud-title{
-  font-size:14px;
-  margin-bottom:10px;
-  opacity:0.8;
-}
-
-.timer{
-  font-size:40px;
-  font-weight:800;
-}
-
+.hud-title{font-size:14px;margin-bottom:10px}
+.timer{font-size:42px;font-weight:900}
 .progress{
-  margin-top:10px;
-  height:8px;
-  border-radius:10px;
-  background:#222;
-  overflow:hidden;
+  margin-top:10px;height:8px;
+  background:#111;border-radius:10px;
 }
-
-.progress-bar{
-  height:100%;
-  width:100%;
+.bar{
+  height:100%;width:100%;
   background:#00F2FF;
-  transition:width 1s linear;
+  transition:1s linear;
 }
 
-/* =========================
-   CARDS
-========================= */
-
+/* CARDS */
 .cards{
   position:absolute;
-  width:100%;
-  bottom:120px;
-  display:flex;
-  justify-content:center;
+  bottom:120px;width:100%;
+  display:flex;justify-content:center;
   gap:60px;
   transform:rotateX(25deg);
+  z-index:2;
 }
-
 .card{
-  width:160px;
-  height:110px;
+  width:150px;height:100px;
   background:white;
   border-radius:15px;
-  box-shadow:0 20px 40px rgba(0,0,0,0.6);
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  font-weight:800;
-  color:#FF7A00;
+  box-shadow:0 20px 40px rgba(0,0,0,.6);
+  display:flex;justify-content:center;align-items:center;
+  font-weight:900;color:#FF7A00;
   cursor:pointer;
-  transition:0.6s;
+  transition:.6s;
 }
+.card:hover{transform:translateY(-20px)}
+.card.fade{opacity:0;transform:scale(.8)}
 
-.card:hover{
-  transform:translateY(-20px);
-}
-
-.card.fade{
-  opacity:0;
-  transform:scale(0.8);
-  pointer-events:none;
-}
-
-/* =========================
-   OBJECTION PANEL
-========================= */
-
+/* PANEL */
 .panel{
   position:absolute;
-  right:80px;
-  top:180px;
-  width:350px;
-  padding:30px;
+  right:60px;
+  top:160px;
+  width:400px;
   background:white;
   color:#111;
   border-radius:20px;
-  box-shadow:0 30px 60px rgba(0,0,0,0.6);
+  padding:25px;
+  box-shadow:0 30px 60px rgba(0,0,0,.7);
   display:none;
+  z-index:6;
 }
+.panel textarea{
+  width:100%;height:100px;
+  margin-top:15px;
+  padding:10px;
+  font-family:sans-serif;
+  resize:none;
+}
+.stars{
+  margin-top:15px;
+}
+.star{
+  font-size:24px;
+  cursor:pointer;
+  color:#ccc;
+}
+.star.active{color:#FF7A00}
 
-/* =========================
-   MODAL
-========================= */
-
+/* MODAL */
 .modal{
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,0.85);
-  display:flex;
+  position:fixed;inset:0;
+  background:rgba(0,0,0,.9);
+  display:none;
+  flex-direction:column;
   justify-content:center;
   align-items:center;
-  flex-direction:column;
   gap:20px;
-  display:none;
+  z-index:10;
 }
-
-.modal h2{
-  font-size:32px;
-  color:#FF007A;
-}
-
 .modal button{
   padding:15px 40px;
   background:#FF7A00;
-  border:none;
-  border-radius:10px;
+  border:none;border-radius:10px;
   font-family:'Orbitron';
   cursor:pointer;
-  font-size:18px;
 }
-
 </style>
 </head>
 <body>
 
+<canvas id="particles"></canvas>
+
 <div class="scene">
 
-<div class="logo">SCOOTO DYNAMIX PRO</div>
-
 <div class="hud">
-  <div class="hud-title">Fase 1 - Leitura</div>
+  <div class="hud-title" id="phase">Fase 1 - Leitura</div>
   <div class="timer" id="timer">30</div>
-  <div class="progress">
-    <div class="progress-bar" id="bar"></div>
-  </div>
+  <div class="progress"><div class="bar" id="bar"></div></div>
 </div>
 
 <div class="floor">
@@ -300,30 +204,54 @@ body{
 </div>
 
 <div class="robot">
-  <div class="crown">
-    <div class="flower"></div>
-    <div class="flower"></div>
-    <div class="flower"></div>
-    <div class="flower"></div>
-  </div>
   <div class="robot-body">🤖</div>
 </div>
 
 <div class="cards" id="cards"></div>
 
-<div class="panel" id="panel"></div>
+<div class="panel" id="panel">
+  <div id="objection"></div>
+  <textarea id="response" placeholder="Digite sua resposta..." disabled></textarea>
+  <div class="stars" id="stars"></div>
+</div>
 
 </div>
 
 <div class="modal" id="modal">
-  <div class="robot-body">🤖</div>
   <h2>Rodada Finalizada</h2>
-  <button onclick="location.reload()">Reiniciar</button>
+  <div id="result"></div>
+  <button onclick="location.reload()">Nova Rodada</button>
 </div>
 
 <script>
+/* PARTICLES */
+const canvas=document.getElementById("particles");
+const ctx=canvas.getContext("2d");
+canvas.width=innerWidth;
+canvas.height=innerHeight;
+let particles=[];
+for(let i=0;i<80;i++){
+ particles.push({x:Math.random()*canvas.width,
+ y:Math.random()*canvas.height,
+ r:Math.random()*2,
+ d:Math.random()*1});
+}
+function draw(){
+ ctx.clearRect(0,0,canvas.width,canvas.height);
+ ctx.fillStyle="#00F2FF";
+ particles.forEach(p=>{
+  ctx.beginPath();
+  ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+  ctx.fill();
+  p.y+=p.d;
+  if(p.y>canvas.height)p.y=0;
+ });
+ requestAnimationFrame(draw);
+}
+draw();
 
-const objections = [
+/* GAME */
+const objections=[
 "Está caro.",
 "Mande por e-mail.",
 "Não pedi essa ligação.",
@@ -332,62 +260,77 @@ const objections = [
 "Vou pensar e retorno."
 ];
 
-const cardsContainer = document.getElementById("cards");
-const timerEl = document.getElementById("timer");
-const bar = document.getElementById("bar");
-const panel = document.getElementById("panel");
-const modal = document.getElementById("modal");
-
-let time = 30;
-let total = 30;
-let selected = false;
+let time=30,total=30,selected=false,rating=0;
+const timerEl=document.getElementById("timer");
+const bar=document.getElementById("bar");
+const phase=document.getElementById("phase");
+const cards=document.getElementById("cards");
+const panel=document.getElementById("panel");
+const objectionEl=document.getElementById("objection");
+const responseEl=document.getElementById("response");
+const modal=document.getElementById("modal");
+const result=document.getElementById("result");
 
 function update(){
-  time--;
-  timerEl.innerText = time;
-  bar.style.width = (time/total*100)+"%";
+ time--;
+ timerEl.innerText=time;
+ bar.style.width=(time/total*100)+"%";
 
-  if(time > 20){
-    bar.style.background="#00F2FF";
-  }else{
-    document.querySelector(".hud-title").innerText="Fase 2 - Sua Resposta";
-    bar.style.background="#FF007A";
-  }
+ if(time>20){
+  bar.style.background="#00F2FF";
+ }else{
+  phase.innerText="Fase 2 - Sua Resposta";
+  bar.style.background="#FF007A";
+  responseEl.disabled=false;
+ }
 
-  if(time<=0){
-    clearInterval(interval);
-    modal.style.display="flex";
-  }
+ if(time<=0){
+  clearInterval(interval);
+  modal.style.display="flex";
+  result.innerHTML=`
+  <p><strong>Objeção:</strong> ${objectionEl.innerText}</p>
+  <p><strong>Resposta:</strong> ${responseEl.value}</p>
+  <p><strong>Nota:</strong> ${rating} ⭐</p>`;
+ }
 }
+let interval=setInterval(update,1000);
 
-let interval = setInterval(update,1000);
-
+/* CARDS */
 function createCards(){
-  for(let i=0;i<4;i++){
-    let c=document.createElement("div");
-    c.className="card";
-    c.innerText="S";
-    c.onclick=()=>selectCard(c);
-    cardsContainer.appendChild(c);
-  }
+ for(let i=0;i<4;i++){
+  let c=document.createElement("div");
+  c.className="card";
+  c.innerText="S";
+  c.onclick=()=>selectCard(c);
+  cards.appendChild(c);
+ }
+}
+function selectCard(card){
+ if(selected)return;
+ selected=true;
+ const text=objections[Math.floor(Math.random()*objections.length)];
+ document.querySelectorAll(".card").forEach(c=>{
+  if(c!==card)c.classList.add("fade");
+ });
+ objectionEl.innerText=text;
+ panel.style.display="block";
 }
 
-function selectCard(card){
-  if(selected) return;
-  selected=true;
-
-  const text = objections[Math.floor(Math.random()*objections.length)];
-
-  document.querySelectorAll(".card").forEach(c=>{
-    if(c!==card) c.classList.add("fade");
+/* STARS */
+for(let i=1;i<=5;i++){
+ let s=document.createElement("span");
+ s.className="star";
+ s.innerHTML="★";
+ s.onclick=()=>{
+  rating=i;
+  document.querySelectorAll(".star").forEach((el,index)=>{
+    el.classList.toggle("active",index<i);
   });
-
-  panel.innerText=text;
-  panel.style.display="block";
+ };
+ document.getElementById("stars").appendChild(s);
 }
 
 createCards();
-
 </script>
 
 </body>
