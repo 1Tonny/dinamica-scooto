@@ -1,139 +1,394 @@
+
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Scooto Dynamix Pro</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Rajdhani:wght@600&display=swap" rel="stylesheet">
-    <style>
-        body, html { margin: 0; padding: 0; width: 100%; height: 100%; background: #02050A; overflow: hidden; font-family: 'Rajdhani', sans-serif; }
-        
-        /* Container Principal com o Fundo da Foto */
-        .arena { 
-            position: relative; 
-            width: 100vw; 
-            height: 100vh; 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-            background: radial-gradient(circle at center, #0B1A2D 0%, #02050A 100%);
-            perspective: 1000px;
-        }
-        
-        /* Chão Neon e Aneis */
-        .ring { position: absolute; border-radius: 50%; transform: rotateX(75deg); }
-        .outer-ring { width: 800px; height: 800px; border: 2px solid rgba(0, 242, 255, 0.2); box-shadow: 0 0 60px rgba(0, 242, 255, 0.1); }
-        .inner-ring { width: 350px; height: 350px; border: 4px solid #FF007A; box-shadow: 0 0 30px #FF007A; z-index: 2; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Scooto Arena Digital</title>
 
-        /* Robozinho Roxo Centralizado */
-        .bot { 
-            position: absolute; 
-            z-index: 10; 
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            animation: float 3s ease-in-out infinite;
-        }
-        .bot img { width: 120px; filter: drop-shadow(0 0 20px #9D00FF); }
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800&display=swap" rel="stylesheet">
 
-        /* HUD Holográfico */
-        .hud { 
-            position: absolute; 
-            top: 40px; 
-            left: 40px; 
-            border-left: 5px solid #00F2FF; 
-            padding: 20px; 
-            background: rgba(0, 242, 255, 0.05); 
-            backdrop-filter: blur(10px); 
-            z-index: 100;
-        }
-        #timer { font-family: 'Orbitron'; font-size: 4rem; color: #00F2FF; margin: 0; text-shadow: 0 0 20px #00F2FF; }
-        .label { color: #FF007A; font-weight: bold; font-size: 0.9rem; letter-spacing: 3px; }
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
 
-        /* Cartas em Semicírculo */
-        .card { 
-            position: absolute; 
-            width: 150px; 
-            height: 220px; 
-            cursor: pointer; 
-            transition: 0.7s cubic-bezier(0.4, 0, 0.2, 1); 
-            transform-style: preserve-3d;
-            z-index: 20;
-        }
-        
-        /* Posicionamento baseado na imagem da Scooto */
-        .c1 { transform: translateX(-350px) translateY(120px) rotateY(30deg); }
-        .c2 { transform: translateX(-180px) translateY(180px) rotateY(15deg); }
-        .c3 { transform: translateX(180px) translateY(180px) rotateY(-15deg); }
-        .c4 { transform: translateX(350px) translateY(120px) rotateY(-30deg); }
+body{
+  height:100vh;
+  overflow:hidden;
+  font-family:'Orbitron',sans-serif;
+  background: radial-gradient(circle at center, #0B1A2D 20%, #000 80%);
+  color:white;
+}
 
-        .card.selected { 
-            transform: translateZ(400px) translateY(-50px) rotateY(180deg) !important; 
-            width: 450px; 
-            height: 600px; 
-            z-index: 200; 
-        }
-        .card.hidden { opacity: 0; pointer-events: none; }
+/* =========================
+   ARENA CONTAINER
+========================= */
 
-        .face { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 15px; border: 4px solid #fff; box-shadow: 0 15px 45px rgba(0,0,0,0.6); }
-        .back { background: #fff; display: flex; justify-content: center; align-items: center; }
-        .back::after { content: 'S'; font-family: 'Orbitron'; color: #FF7A00; font-size: 5rem; font-weight: 900; }
-        .front { background: white; color: #000; transform: rotateY(180deg); padding: 40px; text-align: center; display: flex; align-items: center; justify-content: center; font-size: 2rem; font-weight: bold; border: 8px solid #FF7A00; }
+.scene{
+  width:100%;
+  height:100%;
+  perspective:1400px;
+  position:relative;
+  overflow:hidden;
+}
 
-        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-25px); } }
-    </style>
+/* =========================
+   PARTICLES
+========================= */
+
+.scene::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background-image:
+  radial-gradient(rgba(0,242,255,0.4) 1px, transparent 1px);
+  background-size:50px 50px;
+  opacity:0.05;
+}
+
+/* =========================
+   FLOOR
+========================= */
+
+.floor{
+  position:absolute;
+  width:900px;
+  height:900px;
+  border-radius:50%;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%) rotateX(65deg);
+}
+
+.ring{
+  position:absolute;
+  inset:0;
+  border-radius:50%;
+  border:2px solid #00F2FF;
+  box-shadow:0 0 20px #00F2FF;
+}
+
+.ring:nth-child(2){
+  width:650px;
+  height:650px;
+  margin:auto;
+}
+
+.ring:nth-child(3){
+  width:400px;
+  height:400px;
+  margin:auto;
+  border-color:#FF007A;
+  box-shadow:0 0 25px #FF007A;
+}
+
+/* =========================
+   ROBOT
+========================= */
+
+.robot{
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  animation:float 3s ease-in-out infinite;
+  z-index:5;
+}
+
+.robot-body{
+  width:130px;
+  height:130px;
+  background:#7B3FE4;
+  border-radius:30px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  font-size:50px;
+  box-shadow:0 0 40px rgba(123,63,228,0.7);
+}
+
+.crown{
+  position:absolute;
+  top:-20px;
+  left:50%;
+  transform:translateX(-50%);
+  display:flex;
+  gap:6px;
+}
+
+.flower{
+  width:14px;
+  height:14px;
+  border-radius:50%;
+}
+
+.flower:nth-child(1){background:#FF007A;}
+.flower:nth-child(2){background:#00F2FF;}
+.flower:nth-child(3){background:#FF7A00;}
+.flower:nth-child(4){background:#00FF99;}
+
+@keyframes float{
+  0%,100%{ transform:translate(-50%,-50%) translateY(0);}
+  50%{ transform:translate(-50%,-50%) translateY(-20px);}
+}
+
+/* =========================
+   LOGO TOP
+========================= */
+
+.logo{
+  position:absolute;
+  top:40px;
+  left:50%;
+  transform:translateX(-50%);
+  background:white;
+  padding:15px 40px;
+  border-radius:15px;
+  color:#333;
+  font-weight:800;
+}
+
+/* =========================
+   HUD TIMER
+========================= */
+
+.hud{
+  position:absolute;
+  top:40px;
+  left:40px;
+  width:260px;
+  padding:20px;
+  border-radius:20px;
+  border:2px solid #00F2FF;
+  background:rgba(0,242,255,0.05);
+  backdrop-filter:blur(10px);
+  transform:rotateY(-15deg);
+}
+
+.hud-title{
+  font-size:14px;
+  margin-bottom:10px;
+  opacity:0.8;
+}
+
+.timer{
+  font-size:40px;
+  font-weight:800;
+}
+
+.progress{
+  margin-top:10px;
+  height:8px;
+  border-radius:10px;
+  background:#222;
+  overflow:hidden;
+}
+
+.progress-bar{
+  height:100%;
+  width:100%;
+  background:#00F2FF;
+  transition:width 1s linear;
+}
+
+/* =========================
+   CARDS
+========================= */
+
+.cards{
+  position:absolute;
+  width:100%;
+  bottom:120px;
+  display:flex;
+  justify-content:center;
+  gap:60px;
+  transform:rotateX(25deg);
+}
+
+.card{
+  width:160px;
+  height:110px;
+  background:white;
+  border-radius:15px;
+  box-shadow:0 20px 40px rgba(0,0,0,0.6);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  font-weight:800;
+  color:#FF7A00;
+  cursor:pointer;
+  transition:0.6s;
+}
+
+.card:hover{
+  transform:translateY(-20px);
+}
+
+.card.fade{
+  opacity:0;
+  transform:scale(0.8);
+  pointer-events:none;
+}
+
+/* =========================
+   OBJECTION PANEL
+========================= */
+
+.panel{
+  position:absolute;
+  right:80px;
+  top:180px;
+  width:350px;
+  padding:30px;
+  background:white;
+  color:#111;
+  border-radius:20px;
+  box-shadow:0 30px 60px rgba(0,0,0,0.6);
+  display:none;
+}
+
+/* =========================
+   MODAL
+========================= */
+
+.modal{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.85);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  flex-direction:column;
+  gap:20px;
+  display:none;
+}
+
+.modal h2{
+  font-size:32px;
+  color:#FF007A;
+}
+
+.modal button{
+  padding:15px 40px;
+  background:#FF7A00;
+  border:none;
+  border-radius:10px;
+  font-family:'Orbitron';
+  cursor:pointer;
+  font-size:18px;
+}
+
+</style>
 </head>
 <body>
-    <div class="arena">
-        <div class="hud">
-            <div class="label" id="status">S-BOT: AGUARDANDO</div>
-            <div id="timer">--</div>
-        </div>
 
-        <div class="ring outer-ring"></div>
-        <div class="ring inner-ring"></div>
+<div class="scene">
 
-        <div class="bot">
-            <div style="font-size: 80px;">🤖</div>
-            <div style="position:absolute; top:-20px; font-size:30px;">🌸🌻</div>
-        </div>
+<div class="logo">SCOOTO DYNAMIX PRO</div>
 
-        <div class="card c1" onclick="play(this)"><div class="face back"></div><div class="face front"></div></div>
-        <div class="card c2" onclick="play(this)"><div class="face back"></div><div class="face front"></div></div>
-        <div class="card c3" onclick="play(this)"><div class="face back"></div><div class="face front"></div></div>
-        <div class="card c4" onclick="play(this)"><div class="face back"></div><div class="face front"></div></div>
-    </div>
+<div class="hud">
+  <div class="hud-title">Fase 1 - Leitura</div>
+  <div class="timer" id="timer">30</div>
+  <div class="progress">
+    <div class="progress-bar" id="bar"></div>
+  </div>
+</div>
 
-    <script>
-        const falas = [
-            "Estou em reunião agora, mande por e-mail!",
-            "O seu seguro é o dobro do preço do meu atual!",
-            "Como conseguiu meu número? Não autorizei a ligação!",
-            "Meu carro é velho e fica na garagem, não preciso de seguro!",
-            "Resolva agora! Estou na chuva e o reboque não chega!",
-            "Não quero falar com você, passe para o seu supervisor!"
-        ];
+<div class="floor">
+  <div class="ring"></div>
+  <div class="ring"></div>
+  <div class="ring"></div>
+</div>
 
-        function play(el) {
-            if(el.classList.contains('selected')) return;
-            document.querySelectorAll('.card').forEach(c => c !== el ? c.classList.add('hidden') : null);
-            el.classList.add('selected');
-            
-            setTimeout(() => {
-                el.querySelector('.front').innerText = falas[Math.floor(Math.random()*falas.length)];
-                let t = 30;
-                let clock = setInterval(() => {
-                    t--;
-                    document.getElementById('timer').innerText = t;
-                    document.getElementById('status').innerText = t > 20 ? "FASE: LEITURA" : "FASE: RESPOSTA";
-                    if(t <= 0) {
-                        clearInterval(clock);
-                        alert("Tempo esgotado! Reiniciando...");
-                        location.reload();
-                    }
-                }, 1000);
-            }, 800);
-        }
-    </script>
+<div class="robot">
+  <div class="crown">
+    <div class="flower"></div>
+    <div class="flower"></div>
+    <div class="flower"></div>
+    <div class="flower"></div>
+  </div>
+  <div class="robot-body">🤖</div>
+</div>
+
+<div class="cards" id="cards"></div>
+
+<div class="panel" id="panel"></div>
+
+</div>
+
+<div class="modal" id="modal">
+  <div class="robot-body">🤖</div>
+  <h2>Rodada Finalizada</h2>
+  <button onclick="location.reload()">Reiniciar</button>
+</div>
+
+<script>
+
+const objections = [
+"Está caro.",
+"Mande por e-mail.",
+"Não pedi essa ligação.",
+"Já tenho fornecedor.",
+"Agora não posso falar.",
+"Vou pensar e retorno."
+];
+
+const cardsContainer = document.getElementById("cards");
+const timerEl = document.getElementById("timer");
+const bar = document.getElementById("bar");
+const panel = document.getElementById("panel");
+const modal = document.getElementById("modal");
+
+let time = 30;
+let total = 30;
+let selected = false;
+
+function update(){
+  time--;
+  timerEl.innerText = time;
+  bar.style.width = (time/total*100)+"%";
+
+  if(time > 20){
+    bar.style.background="#00F2FF";
+  }else{
+    document.querySelector(".hud-title").innerText="Fase 2 - Sua Resposta";
+    bar.style.background="#FF007A";
+  }
+
+  if(time<=0){
+    clearInterval(interval);
+    modal.style.display="flex";
+  }
+}
+
+let interval = setInterval(update,1000);
+
+function createCards(){
+  for(let i=0;i<4;i++){
+    let c=document.createElement("div");
+    c.className="card";
+    c.innerText="S";
+    c.onclick=()=>selectCard(c);
+    cardsContainer.appendChild(c);
+  }
+}
+
+function selectCard(card){
+  if(selected) return;
+  selected=true;
+
+  const text = objections[Math.floor(Math.random()*objections.length)];
+
+  document.querySelectorAll(".card").forEach(c=>{
+    if(c!==card) c.classList.add("fade");
+  });
+
+  panel.innerText=text;
+  panel.style.display="block";
+}
+
+createCards();
+
+</script>
+
 </body>
 </html>
