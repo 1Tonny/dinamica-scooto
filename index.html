@@ -3,334 +3,313 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Scooto Arena PRO</title>
+<title>Scooto Dinâmica</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&display=swap" rel="stylesheet">
 
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
+
 body{
-  height:100vh;
-  overflow:hidden;
   font-family:'Orbitron',sans-serif;
-  background:radial-gradient(circle at center,#0B1A2D 20%,#000 80%);
-  color:white;
+  height:100vh;
+  background:linear-gradient(180deg,#5F2EEA 0%, #0B1A2D 100%);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  overflow:hidden;
 }
 
-/* PARTICLES */
-canvas{
-  position:absolute;
-  inset:0;
-  z-index:0;
-}
-
-/* ARENA */
+/* SCENE */
 .scene{
-  position:relative;
   width:100%;
   height:100%;
-  perspective:1500px;
+  position:relative;
+  display:flex;
+  justify-content:center;
+  align-items:flex-end;
 }
 
-/* FLOOR */
-.floor{
+/* DESK */
+.desk{
+  width:90%;
+  height:220px;
+  background:#1a1a1a;
+  border-radius:25px 25px 0 0;
   position:absolute;
-  width:900px;
-  height:900px;
+  bottom:0;
+  box-shadow:0 -20px 60px rgba(0,0,0,.6);
+}
+
+/* CHARACTER */
+.character{
+  position:absolute;
+  left:80px;
+  bottom:240px;
+  text-align:center;
+}
+
+.head{
+  width:120px;height:120px;
+  background:#5F2EEA;
   border-radius:50%;
-  top:50%;
-  left:50%;
-  transform:translate(-50%,-50%) rotateX(65deg);
-}
-
-.ring{
-  position:absolute;
-  inset:0;
-  border-radius:50%;
-  border:2px solid #00F2FF;
-  box-shadow:0 0 20px #00F2FF;
-  animation:pulse 3s infinite alternate;
-}
-
-.ring:nth-child(2){
-  width:650px;height:650px;margin:auto;
-}
-.ring:nth-child(3){
-  width:400px;height:400px;margin:auto;
-  border-color:#FF007A;
-  box-shadow:0 0 30px #FF007A;
-}
-
-@keyframes pulse{
-  from{opacity:.6}
-  to{opacity:1}
-}
-
-/* ROBOT */
-.robot{
-  position:absolute;
-  top:50%;left:50%;
-  transform:translate(-50%,-50%);
-  animation:float 3s ease-in-out infinite;
-  z-index:3;
-}
-.robot-body{
-  width:130px;height:130px;
-  background:#7B3FE4;
-  border-radius:30px;
   display:flex;justify-content:center;align-items:center;
-  font-size:50px;
-  box-shadow:0 0 40px rgba(123,63,228,.8);
-}
-@keyframes float{
-  0%,100%{transform:translate(-50%,-50%) translateY(0)}
-  50%{transform:translate(-50%,-50%) translateY(-20px)}
+  box-shadow:0 0 30px rgba(95,46,234,.8);
 }
 
-/* HUD */
-.hud{
-  position:absolute;
-  top:40px;left:40px;
-  width:280px;
-  padding:20px;
+.face{
+  width:80px;height:80px;
+  background:#FFE6B3;
+  border-radius:50%;
+  position:relative;
+}
+
+.eye{
+  width:12px;height:20px;
+  background:#000;
+  border-radius:50%;
+  position:absolute;top:25px;
+}
+
+.eye.left{left:18px}
+.eye.right{right:18px}
+
+.smile{
+  width:40px;height:20px;
+  border-bottom:4px solid #000;
+  border-radius:0 0 40px 40px;
+  position:absolute;bottom:20px;left:50%;
+  transform:translateX(-50%);
+}
+
+.body{
+  width:100px;height:120px;
+  background:#FF7A00;
   border-radius:20px;
-  border:2px solid #00F2FF;
-  background:rgba(0,242,255,.05);
-  backdrop-filter:blur(10px);
-  transform:rotateY(-15deg);
-  z-index:5;
+  margin:auto;
+  margin-top:-10px;
 }
-.hud-title{font-size:14px;margin-bottom:10px}
-.timer{font-size:42px;font-weight:900}
-.progress{
-  margin-top:10px;height:8px;
-  background:#111;border-radius:10px;
+
+.dialog{
+  margin-top:10px;
+  font-size:14px;
 }
-.bar{
-  height:100%;width:100%;
-  background:#00F2FF;
-  transition:1s linear;
+
+/* TIMER */
+.timer-box{
+  position:absolute;
+  top:30px;
+  right:40px;
+  background:#111;
+  padding:20px 30px;
+  border-radius:20px;
+  box-shadow:0 0 20px rgba(0,0,0,.6);
+  text-align:center;
+}
+
+.timer{
+  font-size:40px;
+  font-weight:900;
+  color:#00C2FF;
+}
+
+.timer.urgent{
+  color:#ff3b3b;
+  animation:shake .3s infinite;
+}
+
+@keyframes shake{
+  0%{transform:translateX(0)}
+  25%{transform:translateX(-4px)}
+  50%{transform:translateX(4px)}
+  75%{transform:translateX(-4px)}
+  100%{transform:translateX(0)}
+}
+
+.phase{
+  font-size:12px;
+  margin-bottom:5px;
 }
 
 /* CARDS */
 .cards{
   position:absolute;
-  bottom:120px;width:100%;
-  display:flex;justify-content:center;
-  gap:60px;
-  transform:rotateX(25deg);
-  z-index:2;
+  bottom:60px;
+  display:flex;
+  gap:25px;
+  perspective:1000px;
 }
+
 .card{
-  width:150px;height:100px;
-  background:white;
-  border-radius:15px;
-  box-shadow:0 20px 40px rgba(0,0,0,.6);
-  display:flex;justify-content:center;align-items:center;
-  font-weight:900;color:#FF7A00;
+  width:120px;
+  height:170px;
+  position:relative;
+  transform-style:preserve-3d;
+  transition:transform .8s;
   cursor:pointer;
-  transition:.6s;
 }
-.card:hover{transform:translateY(-20px)}
-.card.fade{opacity:0;transform:scale(.8)}
 
-/* PANEL */
-.panel{
+.card-face{
   position:absolute;
-  right:60px;
-  top:160px;
-  width:400px;
-  background:white;
-  color:#111;
-  border-radius:20px;
-  padding:25px;
-  box-shadow:0 30px 60px rgba(0,0,0,.7);
-  display:none;
-  z-index:6;
-}
-.panel textarea{
-  width:100%;height:100px;
-  margin-top:15px;
-  padding:10px;
-  font-family:sans-serif;
-  resize:none;
-}
-.stars{
-  margin-top:15px;
-}
-.star{
-  font-size:24px;
-  cursor:pointer;
-  color:#ccc;
-}
-.star.active{color:#FF7A00}
-
-/* MODAL */
-.modal{
-  position:fixed;inset:0;
-  background:rgba(0,0,0,.9);
-  display:none;
-  flex-direction:column;
+  width:100%;
+  height:100%;
+  border-radius:15px;
+  backface-visibility:hidden;
+  display:flex;
   justify-content:center;
   align-items:center;
-  gap:20px;
+  padding:15px;
+  text-align:center;
+  font-size:14px;
+}
+
+.card-front{
+  background:#fff;
+  color:#5F2EEA;
+  border:3px solid #5F2EEA;
+}
+
+.card-back{
+  background:#5F2EEA;
+  color:#fff;
+  transform:rotateY(180deg);
+}
+
+.card.flipped{
+  transform:rotateY(180deg) scale(1.8) translateY(-120px);
   z-index:10;
 }
-.modal button{
-  padding:15px 40px;
-  background:#FF7A00;
-  border:none;border-radius:10px;
-  font-family:'Orbitron';
-  cursor:pointer;
+
+.hidden{
+  opacity:0;
+  pointer-events:none;
+}
+
+textarea{
+  width:100%;
+  margin-top:10px;
+  padding:10px;
+  border-radius:10px;
+  border:none;
+  display:none;
+  resize:none;
 }
 </style>
 </head>
 <body>
 
-<canvas id="particles"></canvas>
-
 <div class="scene">
 
-<div class="hud">
-  <div class="hud-title" id="phase">Fase 1 - Leitura</div>
-  <div class="timer" id="timer">30</div>
-  <div class="progress"><div class="bar" id="bar"></div></div>
+<div class="timer-box">
+<div class="phase" id="phase">Escolha uma carta</div>
+<div class="timer" id="timer">30</div>
 </div>
 
-<div class="floor">
-  <div class="ring"></div>
-  <div class="ring"></div>
-  <div class="ring"></div>
+<div class="character">
+  <div class="head">
+    <div class="face">
+      <div class="eye left"></div>
+      <div class="eye right"></div>
+      <div class="smile"></div>
+    </div>
+  </div>
+  <div class="body"></div>
+  <div class="dialog" id="dialog">Escolha uma carta!</div>
 </div>
 
-<div class="robot">
-  <div class="robot-body">🤖</div>
-</div>
+<div class="desk"></div>
 
 <div class="cards" id="cards"></div>
 
-<div class="panel" id="panel">
-  <div id="objection"></div>
-  <textarea id="response" placeholder="Digite sua resposta..." disabled></textarea>
-  <div class="stars" id="stars"></div>
-</div>
-
-</div>
-
-<div class="modal" id="modal">
-  <h2>Rodada Finalizada</h2>
-  <div id="result"></div>
-  <button onclick="location.reload()">Nova Rodada</button>
 </div>
 
 <script>
-/* PARTICLES */
-const canvas=document.getElementById("particles");
-const ctx=canvas.getContext("2d");
-canvas.width=innerWidth;
-canvas.height=innerHeight;
-let particles=[];
-for(let i=0;i<80;i++){
- particles.push({x:Math.random()*canvas.width,
- y:Math.random()*canvas.height,
- r:Math.random()*2,
- d:Math.random()*1});
-}
-function draw(){
- ctx.clearRect(0,0,canvas.width,canvas.height);
- ctx.fillStyle="#00F2FF";
- particles.forEach(p=>{
-  ctx.beginPath();
-  ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
-  ctx.fill();
-  p.y+=p.d;
-  if(p.y>canvas.height)p.y=0;
- });
- requestAnimationFrame(draw);
-}
-draw();
 
-/* GAME */
 const objections=[
 "Está caro.",
 "Mande por e-mail.",
 "Não pedi essa ligação.",
 "Já tenho fornecedor.",
-"Agora não posso falar.",
-"Vou pensar e retorno."
+"Agora não posso falar."
 ];
 
-let time=30,total=30,selected=false,rating=0;
+const cardsContainer=document.getElementById("cards");
 const timerEl=document.getElementById("timer");
-const bar=document.getElementById("bar");
-const phase=document.getElementById("phase");
-const cards=document.getElementById("cards");
-const panel=document.getElementById("panel");
-const objectionEl=document.getElementById("objection");
-const responseEl=document.getElementById("response");
-const modal=document.getElementById("modal");
-const result=document.getElementById("result");
+const phaseEl=document.getElementById("phase");
+const dialogEl=document.getElementById("dialog");
 
-function update(){
- time--;
- timerEl.innerText=time;
- bar.style.width=(time/total*100)+"%";
+let time=30;
+let interval=null;
+let activeCard=null;
+let phase="idle";
 
- if(time>20){
-  bar.style.background="#00F2FF";
- }else{
-  phase.innerText="Fase 2 - Sua Resposta";
-  bar.style.background="#FF007A";
-  responseEl.disabled=false;
- }
-
- if(time<=0){
-  clearInterval(interval);
-  modal.style.display="flex";
-  result.innerHTML=`
-  <p><strong>Objeção:</strong> ${objectionEl.innerText}</p>
-  <p><strong>Resposta:</strong> ${responseEl.value}</p>
-  <p><strong>Nota:</strong> ${rating} ⭐</p>`;
- }
-}
-let interval=setInterval(update,1000);
-
-/* CARDS */
 function createCards(){
- for(let i=0;i<4;i++){
-  let c=document.createElement("div");
-  c.className="card";
-  c.innerText="S";
-  c.onclick=()=>selectCard(c);
-  cards.appendChild(c);
- }
-}
-function selectCard(card){
- if(selected)return;
- selected=true;
- const text=objections[Math.floor(Math.random()*objections.length)];
- document.querySelectorAll(".card").forEach(c=>{
-  if(c!==card)c.classList.add("fade");
- });
- objectionEl.innerText=text;
- panel.style.display="block";
+  cardsContainer.innerHTML="";
+  objections.forEach((text,i)=>{
+    const card=document.createElement("div");
+    card.className="card";
+    card.innerHTML=`
+      <div class="card-face card-front">Scooto</div>
+      <div class="card-face card-back">${text}</div>
+    `;
+    card.onclick=()=>flipCard(card);
+    cardsContainer.appendChild(card);
+  });
 }
 
-/* STARS */
-for(let i=1;i<=5;i++){
- let s=document.createElement("span");
- s.className="star";
- s.innerHTML="★";
- s.onclick=()=>{
-  rating=i;
-  document.querySelectorAll(".star").forEach((el,index)=>{
-    el.classList.toggle("active",index<i);
+function flipCard(card){
+  if(phase!=="idle")return;
+
+  activeCard=card;
+  document.querySelectorAll(".card").forEach(c=>{
+    if(c!==card)c.classList.add("hidden");
   });
- };
- document.getElementById("stars").appendChild(s);
+
+  card.classList.add("flipped");
+  dialogEl.innerText="Leia com atenção...";
+  startTimer();
+}
+
+function startTimer(){
+  phase="reading";
+  time=30;
+  interval=setInterval(updateTimer,1000);
+}
+
+function updateTimer(){
+  time--;
+  timerEl.innerText=time;
+
+  if(time>20){
+    phaseEl.innerText="Fase 1 - Leitura";
+    timerEl.style.color="#00C2FF";
+  }
+  else if(time>5){
+    phaseEl.innerText="Fase 2 - Resposta";
+    timerEl.style.color="#5F2EEA";
+  }
+  else{
+    timerEl.classList.add("urgent");
+  }
+
+  if(time<=0){
+    clearInterval(interval);
+    resetGame();
+  }
+}
+
+function resetGame(){
+  phase="idle";
+  timerEl.classList.remove("urgent");
+  phaseEl.innerText="Escolha uma carta";
+  dialogEl.innerText="Vamos jogar novamente?";
+  document.querySelectorAll(".card").forEach(c=>{
+    c.classList.remove("flipped","hidden");
+  });
 }
 
 createCards();
+
 </script>
 
 </body>
